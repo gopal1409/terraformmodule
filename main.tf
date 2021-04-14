@@ -2,7 +2,6 @@ provider "azurerm" {
   features {}
 }
 provider "random" {
-  version = "3.1.0"
 }
 
 module "location_us2w" {

@@ -160,7 +160,7 @@ extension {
 SETTINGS
  }
 }
-resource "azure_lb" "web_server_lb" {
+resource "azurerm_lb" "web_server_lb" {
     name = "${var.resource_prefix}-lb"
     resource_group_name = azurerm_resource_group.web_server_rg.name
     location = var.location
