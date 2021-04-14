@@ -17,7 +17,7 @@ resource "azurerm_virtual_network" "web_server_vnet" {
     name = var.web_server_rg
     location = var.web_server_location
     resource_group_name = azurerm_resource_group.web_server_rg.name
-    adress_space = [var.web_server_address_spaces]
+    address_space = [var.web_server_address_spaces]
 }
 
 resource "azurerm_subnet" "web_server_subnet" {
@@ -28,7 +28,7 @@ resource "azurerm_subnet" "web_server_subnet" {
     address_prefix = each.value
 }
 
-resource "azurerm_public_ip" "web_server_public_ip" {
+resource "azurerm_public_ip" "web_server_lb_public_ip" {
     name = "${var.resource_prefix}-public-ip"
     location = var.web_server_location
     resource_group_name = azurerm_resource_group.web_server_rg.name
@@ -91,6 +91,7 @@ resource "azurerm_virtual_machine_scale_set" "web_server" {
   name                = "${var.resource_prefix}-scale-set"
   location            = var.web_server_location
   resource_group_name = azurerm_resource_group.web_server_rg.name
+  upgrade_policy_mode = "manual"
 
   sku {
     name     = "Standard_B1s"
@@ -127,7 +128,7 @@ resource "azurerm_virtual_machine_scale_set" "web_server" {
 
   os_profile_windows_config {
     provision_vm_agent = true
-    enable_automatic_upgrade = true
+    enable_automatic_upgrades = true
   }
 
   network_profile {
@@ -144,17 +145,17 @@ resource "azurerm_virtual_machine_scale_set" "web_server" {
   }
   boot_diagnostics {
      enabled = true 
-     storage_uri = azurerm_storage_account.storage_account.primary.blob_endpoint
+     storage_uri = azurerm_storage_account.storage_account.primary_blob_endpoint
   }
 extension {
   name                 = "${local.web_server_name}-extension"
   publisher            = "Microsoft.Compute"
-  type                 = "CustomScript"
+  type                 = "CustomScriptExtension"
   type_handler_version = "2.0"
 
   settings = <<SETTINGS
     {
-        "fileUris": ["https://raw.githubusercontent.com/eltimmo/learning/master/azureInstallWebServer.ps1"]
+        "fileUris": ["https://raw.githubusercontent.com/eltimmo/learning/master/azureInstallWebServer.ps1"],
         "commandToExecute": "start powershell -ExecutionPolicy Unrestrictred -File azureInstallWebServer.ps1"
     }
 SETTINGS
@@ -163,7 +164,7 @@ SETTINGS
 resource "azurerm_lb" "web_server_lb" {
     name = "${var.resource_prefix}-lb"
     resource_group_name = azurerm_resource_group.web_server_rg.name
-    location = var.location
+    location = var.web_server_location
     frontend_ip_configuration {
         name = "${var.resource_prefix}-lb-frontend-ip"
         public_ip_address_id = azurerm_public_ip.web_server_lb_public_ip.id
@@ -192,5 +193,5 @@ resource "azurerm_lb_rule" "web_server_lb_http_rule" {
   backend_port                   = 80
   frontend_ip_configuration_name = "${var.resource_prefix}-lb-frontend-ip"
   probe_id = azurerm_lb_probe.web_server_lb_http_probe.id
-  backend_address_pool = azurerm_lb_backend_address_pool.web_server_lb_backend_pool.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.web_server_lb_backend_pool.id
 }

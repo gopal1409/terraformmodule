@@ -12,6 +12,7 @@ module "location_us2w" {
     web_server_address_spaces = "1.0.0.0/22"
     web_server_name = var.web_server_name
     environment = var.environment
+    web_server_count = var.web_server_count
     web_server_subnets = {
         web-server = "1.0.0.0/24"        
     }
@@ -26,6 +27,7 @@ module "location_us2e" {
     resource_prefix = "${var.resource_prefix}-us2e"
     web_server_address_spaces = "2.0.0.0/22"
     web_server_name = var.web_server_name
+    web_server_count = var.web_server_count
     environment = var.environment
     web_server_subnets = {
         web-server = "2.0.0.0/24"        
