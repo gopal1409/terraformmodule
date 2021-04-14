@@ -1,5 +1,5 @@
 locals {
-    web_server_name = var.environment == "production" ? "{var.web_server_name}-prod" : "{var.web_server_name}-dev" 
+    web_server_name = var.environment == "production" ? "${var.web_server_name}-prd" : "${var.web_server_name}-dev" 
     build_environment = var.environment == "production" ? "production" : "development"
 }
 
@@ -173,7 +173,6 @@ resource "azurerm_lb" "web_server_lb" {
 
 resource "azurerm_lb_backend_address_pool" "web_server_lb_backend_pool" {
   name = "${var.resource_prefix}-lb-backend-pool"
-  resource_group_name = azurerm_resource_group.web_server_rg.name
   loadbalancer_id = azurerm_lb.web_server_lb.id
 }
 

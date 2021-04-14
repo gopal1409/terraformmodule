@@ -4,4 +4,4 @@ web_server_name = "web"
 environment = "production"
 web_server_count = 2
 terraform_script_version =  "1.0.0"
-domain_name_label = "learning-tf-v2"
+domain_name_label = "learning-tf-v2-gd"
