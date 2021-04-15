@@ -151,7 +151,7 @@ extension {
   name                 = "${local.web_server_name}-extension"
   publisher            = "Microsoft.Compute"
   type                 = "CustomScriptExtension"
-  type_handler_version = "2.0"
+  type_handler_version = "1.10"
 
   settings = <<SETTINGS
     {
