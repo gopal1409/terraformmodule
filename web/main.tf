@@ -32,7 +32,7 @@ module "location_us2e" {
     environment = var.environment
     web_server_subnets = {
         web-server = "2.0.0.0/24"        
-        AzureBastionSubnet = "1.0.2.0/24"
+        AzureBastionSubnet = "2.0.2.0/24"
     }
     terraform_script_version = var.terraform_script_version
     admin_password = data.azurerm_key_vault_secret.admin_password.value
