@@ -68,7 +68,7 @@ resource "azurerm_traffic_manager_endpoint" "traffic_manager_us2w" {
   resource_group_name = azurerm_resource_group.global_rg.name
   profile_name        = azurerm_traffic_manager_profile.traffic_manager.name
   target_resource_id  = module.location_us2w.web_server_lb_public_ip_id
-  type                = "AzureEndpoints"
+  type                = "azureEndpoints"
   weight              = 100
 }
 resource "azurerm_traffic_manager_endpoint" "traffic_manager_us2e" {
@@ -76,6 +76,6 @@ resource "azurerm_traffic_manager_endpoint" "traffic_manager_us2e" {
   resource_group_name = azurerm_resource_group.global_rg.name
   profile_name        = azurerm_traffic_manager_profile.traffic_manager.name
   target_resource_id  = module.location_us2w.web_server_lb_public_ip_id
-  type                = "AzureEndpoints"
+  type                = "azureEndpoints"
   weight              = 100
 }
