@@ -94,7 +94,7 @@ resource "azurerm_virtual_machine_scale_set" "web_server" {
   upgrade_policy_mode = "manual"
 
   sku {
-    name     = "Standard_B1s"
+    name     = "Standard_D2s_v3"
     tier     = "Standard"
     capacity = var.web_server_count
   }
@@ -102,7 +102,7 @@ resource "azurerm_virtual_machine_scale_set" "web_server" {
   storage_profile_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
-    sku       = "2016-Datacenter"
+    sku       = "2019-Datacenter"
     version   = "latest"
   }
 
@@ -156,7 +156,7 @@ extension {
   settings = <<SETTINGS
     {
         "fileUris": ["https://raw.githubusercontent.com/eltimmo/learning/master/azureInstallWebServer.ps1"],
-        "commandToExecute": "start powershell -ExecutionPolicy Unrestrictred -File azureInstallWebServer.ps1"
+        "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File \"azureInstallWebServer.ps1\""
     }
 SETTINGS
  }
